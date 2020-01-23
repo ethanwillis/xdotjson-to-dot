@@ -136,7 +136,7 @@ const generateSubgraphAttributes = subgraph => {
 const generateSubgraphNodes = subgraph => {
   return `${
             subgraph.nodes.map(node => {
-                return `\n\t\t${node.name}`;
+                return `\n\t\t${node.name}${generateNodeAttributes(node)}`;
             }).join("")
           }`;
 }
@@ -144,7 +144,7 @@ const generateSubgraphNodes = subgraph => {
 const generateSubgraphEdges = subgraph => {
   return `${
       subgraph.edges.map(edge => {
-        return `\n\t\t${edge.tail.name} -> ${edge.head.name}`
+        return `\n\t\t${edge.tail.name} -> ${edge.head.name}${generateEdgeAttributes(edge)}`
       })
     }`;
 }
@@ -156,6 +156,49 @@ const generateSubgraph = subgraph => {
           + generateSubgraphEdges(subgraph)
           + `\n\t}`
 }
+
+const generateItemAttributes = (item, requiredFields, unsupportedFields, unacceptableFieldValues = {}) => {
+  const attributesOutput =`[`
+          + `${
+                Object.keys(item).map(key => {
+                  return !requiredFields.includes(key)
+                          && !unsupportedFields.includes(key)
+                          && (
+                              !Object.keys(unacceptableFieldValues).includes(key)
+                              || !unacceptableFieldValues[key].includes(item[key])
+                             )
+                          ? `${key}="${item[key]}"`
+                          : "";
+                }).filter(attribute => attribute != "").join(",")
+            }`
+          + `]`
+  return attributesOutput == "[]" ? "" : attributesOutput;
+}
+
+const generateEdgeAttributes = edge => {
+  const requiredFields = ['_gvid', 'tail', 'head'];
+  const unsupportedFields = [
+    '_hldraw_', '_tdraw_', '_draw_',
+    '_ldraw_', '_gvid', '_tldraw_',
+    '_hdraw_'
+  ];
+
+  return generateItemAttributes(edge, requiredFields, unsupportedFields);
+}
+
+const generateNodeAttributes = node => {
+  const requiredFields = ['_gvid', 'name']
+  const unsupportedFields = [
+    '_draw_', '_ldraw_', '_gvid',
+    'subgraphs', 'edges', 'nodes'
+  ]
+  const unacceptableFieldValues = {
+    label: "\\N"
+  }
+
+  return generateItemAttributes(node, requiredFields, unsupportedFields, unacceptableFieldValues);
+}
+
 
 // MAIN CONVERSION FUNCTION.
 const convert = graph => {
@@ -174,11 +217,11 @@ const convert = graph => {
   const graphItemIds = getGraphItemIds(graph, subgraphs);
   const graphItems = getGraphItems(graph, graphItemIds);
   dotGraphOutput += graphItems.nodes.map(node => {
-    return `\n\t${node.name}`
+    return `\n\t${node.name}${generateNodeAttributes(node)}`
   }).join("");
 
   dotGraphOutput += graphItems.edges.map(edge => {
-    return `\n\t${edge.tail.name} -> ${edge.head.name}`
+    return `\n\t${edge.tail.name} -> ${edge.head.name}${generateEdgeAttributes(edge)}`
   }).join("")
 
   // Close graph
