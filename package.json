@@ -1,0 +1,29 @@
+{
+  "name": "xdotjson-to-dot",
+  "version": "1.0.0",
+  "description": "convert xdotjson format to dot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanwillis/xdotjson-to-dot.git"
+  },
+  "keywords": [
+    "graphviz",
+    "xdotjson",
+    "zdot",
+    "dot",
+    "convert"
+  ],
+  "author": "Ethan Willis",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ethanwillis/xdotjson-to-dot/issues"
+  },
+  "homepage": "https://github.com/ethanwillis/xdotjson-to-dot#readme",
+  "dependencies": {
+    "get-stdin": "^7.0.0"
+  }
+}
