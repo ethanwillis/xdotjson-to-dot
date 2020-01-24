@@ -1,8 +1,11 @@
 {
   "name": "xdotjson-convert",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "convert xdotjson format to dot",
   "main": "index.js",
+  "bin": {
+    "xdotjson-convert": "src/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
