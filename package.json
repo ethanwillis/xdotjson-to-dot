@@ -1,5 +1,5 @@
 {
-  "name": "xdotjson-to-dot",
+  "name": "xdotjson-convert",
   "version": "1.0.0",
   "description": "convert xdotjson format to dot",
   "main": "index.js",
