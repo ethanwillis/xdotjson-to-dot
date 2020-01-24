@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
   graph	:	[ strict ] (graph | digraph) [ ID ] '{' stmt_list '}'
   stmt_list	:	[ stmt [ ';' ] stmt_list ]
